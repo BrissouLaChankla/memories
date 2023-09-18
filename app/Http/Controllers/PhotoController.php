@@ -82,8 +82,7 @@ class PhotoController extends Controller
         }
 
         // Convertissez l'image en format WebP
-        $img->encode('webp', 95); // Vous pouvez régler la qualité (90 dans cet exemple)
-
+        $img->encode('webp', 98); 
         // Enregistrez l'image convertie
         $img->save($storagePath);
 

@@ -51,7 +51,8 @@
 
     @push('styles')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.1/css/lightgallery-bundle.min.css" integrity="sha512-nUqPe0+ak577sKSMThGcKJauRI7ENhKC2FQAOOmdyCYSrUh0GnwLsZNYqwilpMmplN+3nO3zso8CWUgu33BDag==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.1/css/lg-rotate.min.css" integrity="sha512-MA+4qtM9bL1Zo9WFrgpG5Du64wrIITpmGBgbGdxUhq2BOh5FT288I8vk6HD3qlRe3ld7kTYWbUxPBZ6BX+Paag==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     @endpush
     @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.1/lightgallery.min.js" integrity="sha512-dSI4QnNeaXiNEjX2N8bkb16B7aMu/8SI5/rE6NIa3Hr/HnWUO+EAZpizN2JQJrXuvU7z0HTgpBVk/sfGd0oW+w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -72,7 +73,7 @@
 
                 const shareData = {
                     title: 'Memories',
-                    text: 'Partage cet album aux autres ❤️',
+                    text: 'Regarde cet album!',
                     url: '{{url()->full()}}',
                     }
 
