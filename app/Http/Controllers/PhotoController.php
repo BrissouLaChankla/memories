@@ -52,7 +52,7 @@ class PhotoController extends Controller
 
         // Obtenez le chemin complet de l'image dans le stockage
         $storagePath = storage_path('app/public/' . $destinationPath);
-        chmod($storagePath, 0755);
+        chmod(storage_path('app/public/images/'.$albumSlug), 0755);
 
 
         // Ouvrez l'image avec Intervention Image
@@ -89,7 +89,7 @@ class PhotoController extends Controller
         // Créez un sous-dossier "thumb"
         $destinationThumbPath = $image->storeAs('images/' . $albumSlug.'/thumb/', $imageName, 'local');
         $storageThumbPath = storage_path('app/public/' . $destinationThumbPath);
-        chmod($storageThumbPath, 0755);
+        chmod(storage_path('app/public/images/'.$albumSlug.'/thumb'), 0755);
 
         // Créez une copie de l'image redimensionnée en tant que "thumbnail" dans le sous-dossier "thumb"
 
