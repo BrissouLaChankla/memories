@@ -52,11 +52,11 @@ class PhotoController extends Controller
 
         // Obtenez le chemin complet de l'image dans le stockage
         $storagePath = storage_path('app/public/' . $destinationPath);
-        chmod($storagePath, 0644);
+        chmod($storagePath, 0755);
 
 
         // Ouvrez l'image avec Intervention Image
-        $img = Image::make($image);
+        $img = Image::make($image)->orientate();
 
 
         // PARTIE BDD
@@ -89,12 +89,12 @@ class PhotoController extends Controller
         // Créez un sous-dossier "thumb"
         $destinationThumbPath = $image->storeAs('images/' . $albumSlug.'/thumb/', $imageName, 'local');
         $storageThumbPath = storage_path('app/public/' . $destinationThumbPath);
-        chmod($storageThumbPath, 0644);
+        chmod($storageThumbPath, 0755);
 
         // Créez une copie de l'image redimensionnée en tant que "thumbnail" dans le sous-dossier "thumb"
 
         // Copiez l'image redimensionnée dans le sous-dossier "thumb"
-        $thumbImg = Image::make($storagePath);
+        $thumbImg = Image::make($storagePath)->orientate();
         $thumbImg->resize(333, 200, function ($constraint) {
             $constraint->aspectRatio();
             $constraint->upsize();
