@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Album;
+use App\Models\Photo;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 
 
 
@@ -24,7 +26,6 @@ class AlbumController extends Controller
      */
     public function create()
     {
-        // return "cc";
         return view('albums.create');
     }
 
@@ -74,7 +75,28 @@ class AlbumController extends Controller
      */
     public function destroy(Album $album)
     {
-        //
+        // Trouve l'album
+        $album = Album::with('photos')->find($album->id);
+
+        // Trouve l'emplacement sur le disque
+        $albumFolder = storage_path('app/public/images/'.$album->slug);
+
+    
+        // Le fume
+        if (File::exists($albumFolder)) {
+            File::deleteDirectory($albumFolder);
+        }
+
+        // Retire en BDD les photos de l'album
+        foreach ($album->photos as $photo) {
+            Photo::destroy($photo->id);
+        }
+
+        // Retire en BDD l'album
+        Album::destroy($album->id);
+
+
+        return json_encode("gg");
     }
 
 

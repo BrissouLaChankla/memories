@@ -133,9 +133,24 @@ class PhotoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Photo $photo)
+    public function destroy(Request $request)
     {
-        //
+        $photo = Photo::where('url', $request->input('photo_name'))->first();
+        $album = Album::find($photo->album_id);
+
+        // Localise où sont stockées miniature + photo
+        $photoFile = storage_path('app/public/images/'.$album->slug .'/'. $request->input('photo_name'));
+        $photoFileThumb = storage_path('app/public/images/'.$album->slug.'/thumb/'. $request->input('photo_name'));
+
+        // remove la photo & sa miniature
+        if(File::exists($photoFile)){
+            File::delete([$photoFile, $photoFileThumb]);
+        }
+
+        // Remove l'entrée en bdd
+        Photo::destroy($photo->id);
+
+        return json_encode("gg");
     }
 
 
