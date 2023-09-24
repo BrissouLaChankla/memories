@@ -35,5 +35,8 @@ Route::middleware('auth')->group(function () {
     
     Route::post('uploads-dropzone', [PhotoController::class,'uploadsDropzone'])->name('uploads');
 
+    Route::get('generate-thumbs', [PhotoController::class, 'generateThumbs']);
+    Route::post('postThumbs', [PhotoController::class, 'postThumbs']);
+    
 
 });

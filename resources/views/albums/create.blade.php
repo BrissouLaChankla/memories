@@ -12,7 +12,7 @@
 
         <div class="mb-4">
             <label for="description" class="h5 form-label">{{ __('Description') }}</label>
-            <textarea  class="form-control basic" id="description" name="description" rows="3"></textarea>
+            <textarea class="form-control basic" id="description" name="description" rows="3"></textarea>
         </div>
 
         <div class="mb-4">

@@ -42,7 +42,7 @@ class AlbumController extends Controller
         $album->save();
 
         session()->flash('success', 'Le chapitre a bien été crée !');
-        return redirect()->route('home');
+        return redirect()->route('albums.show', ['album' => $album->slug]);
     }
 
     /**
