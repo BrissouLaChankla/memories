@@ -55,18 +55,31 @@
         </div>
         <div id="animated-thumbnails-gallery" class="text-center mt-3">
             @forelse ($album->photos as $photo)
-                {{-- data-lg-size="1920-1280" --}}
 
-
-                <a href="{{ asset('storage/images/' . $album->slug . '/' . $photo->url) }}"
+            @if(pathinfo($photo->url)["extension"] === "webp")
+                <a href="{{ asset('storage/images/' . $album->slug . '/' .$photo->url) }}"
                     class="gallery-item text-decoration-none  position-relative h-100 d-inline-block overflow-hidden"
                     data-sub-html="<h4>Postée par - {{ $photo->authorname }} </h4><p> Le {{ $photo->created_at->format('d/m/Y') }} </p>">
-
              
-                    <img loading="lazy" src="{{ asset('storage/images/' . $album->slug . '/thumb/' . $photo->url) }}" />
-
+                    <img loading="lazy" src="{{ asset('storage/images/' . $album->slug . '/thumb/' . pathinfo($photo->url)["filename"].'.webp') }}" />
 
                 </a>
+                @else
+
+                    <a
+                    data-video='{"source": [{"src":"{{ asset('storage/images/' . $album->slug . '/' .$photo->url) }}", "type":"video/mp4"}], "attributes": {"preload": false, "controls": true}}'
+                    class="gallery-item text-decoration-none  position-relative h-100 d-inline-block overflow-hidden"
+                    data-poster="{{ asset('storage/images/' . $album->slug . '/thumb/' . pathinfo($photo->url)["filename"].'.webp') }}"
+                    data-sub-html="<h4>Postée par - {{ $photo->authorname }} </h4><p> Le {{ $photo->created_at->format('d/m/Y') }} </p>"
+                    >
+                        <img
+                            height="200"
+                            class="img-responsive"
+                            src="{{ asset('storage/images/' . $album->slug . '/thumb/' . pathinfo($photo->url)["filename"].'.webp') }}"
+                        />
+                    </a>
+                @endif
+
             @empty
                 <div class="alert alert-info mt-4" role="alert">
                     Il ne tarde que vous d'ajouter des photos à cet album 😉
@@ -86,6 +99,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.1/css/lg-rotate.min.css"
             integrity="sha512-MA+4qtM9bL1Zo9WFrgpG5Du64wrIITpmGBgbGdxUhq2BOh5FT288I8vk6HD3qlRe3ld7kTYWbUxPBZ6BX+Paag=="
             crossorigin="anonymous" referrerpolicy="no-referrer" />
+       
     @endpush
 
 
@@ -99,6 +113,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.1/plugins/thumbnail/lg-thumbnail.min.js"
             integrity="sha512-Jx+orEb1KJtJ6Ajfshhr7is0zqgUC7H9ylk76KMtB9Ea2WAf/Muyzpe9zvBAYQQQKdAbj+rNYEorsRQLsmRafA=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.1/plugins/video/lg-video.min.js" integrity="sha512-mjdf6tU1Mksu9Hq2YXfbxdzzYHU7SJYmAsMnrhBf80SkHFvk6eHa2d79JM0q5w5ft5nQyBQ0EMB+XTmnvhcFgA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -107,7 +122,7 @@
         <script>
             lightGallery(document.getElementById('animated-thumbnails-gallery'), {
                 thumbnail: true,
-                plugins: [lgZoom, lgThumbnail],
+                plugins: [lgZoom, lgThumbnail, lgVideo],
                 speed: 500,
 
                 // ... other settings
