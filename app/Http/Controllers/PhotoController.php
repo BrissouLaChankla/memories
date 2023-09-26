@@ -232,7 +232,7 @@ class PhotoController extends Controller
         foreach ($albums as $album) {
             $directory = public_path('storage/images/' . $album->slug); // Remplacez par le chemin de votre dossier
             $finder = new Finder();
-            $finder->files()->in($directory)->name('*.mp4');
+            $finder->files()->in($directory)->name('/\.(mp4|mov|avi|mkv|wmv|flv|mpeg|3gp)$/i');
 
             $mp4FileUrls = collect($finder)->map(function ($file) {
                 return $file->getFilename();

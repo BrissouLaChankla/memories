@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
 
             $table->string("url");
-            $table->text("metadata");
+            $table->text("metadata")->nullable();
            
             $table->unsignedBigInteger('album_id');
             $table->unsignedBigInteger('user_id');
