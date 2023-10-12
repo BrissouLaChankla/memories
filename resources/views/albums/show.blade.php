@@ -186,7 +186,7 @@
 
 
 
-
+        if(document.querySelector('.delete-album')) {
                 document.querySelector('.delete-album').addEventListener('click', () => {
                     Swal.fire({
                         title: 'Attention !',
@@ -215,11 +215,11 @@
                         }
                     })
                 })
-
+            }
 
                 const shareData = {
                     title: 'Memories - {{ $album->title }}',
-                    text: '📷➡️ ',
+                    text: '🔗️👉 ',
                     url: '{{ url()->full() }}',
                 }
 
