@@ -34,6 +34,7 @@ class AlbumController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->all());
         
         $slug = $this->generateUniqueSlug($request->title);
         $request->merge(['slug' => $slug, 'user_id' =>  Auth::id()]);
@@ -113,6 +114,47 @@ class AlbumController extends Controller
         }
 
         return $slug;
+    }
+
+    public function downloadAlbumZip(Album $album) {
+
+
+        // Parcours du répertoire pour trouver tous les fichiers ZIP
+        $zip_files = glob(public_path().'/*.zip');
+
+        // Suppression de tous les fichiers ZIP trouvés
+        foreach ($zip_files as $zip_file) {
+            if (is_file($zip_file)) {
+                unlink($zip_file);
+            }
+        }
+
+
+
+        $zip_file = $album->title.'.zip';
+        $zip = new \ZipArchive();
+        $zip->open($zip_file, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
+
+
+        $path = storage_path('app/public/images/'.$album->slug);
+
+
+        $files = new \DirectoryIterator($path);
+        foreach ($files as $name => $file)
+        {
+            // We're skipping all subfolders
+            if (!$file->isDir()) {
+                $filePath     = $file->getRealPath();
+
+                // extracting filename with substr/strlen
+                $relativePath = $album->title.'/' . substr($filePath, strlen($path) + 1);
+
+                $zip->addFile($filePath, $relativePath);
+            }
+        }
+        $zip->close();
+        return response()->download($zip_file);
+        
     }
 
 }

@@ -29,6 +29,7 @@ Route::middleware('auth')->group(function () {
 
     
     Route::resource('albums', AlbumController::class);
+    Route::get('albums/download/{album}', [AlbumController::class, 'downloadAlbumZip'])->name('albums.download');
     
     Route::resource('photos', PhotoController::class);
     Route::post('photos/create/{album_id}', [PhotoController::class, 'create']);

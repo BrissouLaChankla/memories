@@ -88,7 +88,7 @@ class PhotoController extends Controller
             }
 
             // Convertissez l'image en format WebP
-            $img->encode('webp', 98);
+            $img->encode('webp', 99);
             // Enregistrez l'image convertie
             $img->save($storagePath);
 
