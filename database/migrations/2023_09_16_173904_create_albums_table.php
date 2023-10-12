@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string("type")->nullable();
             $table->string("slug");
             $table->string("location")->nullable();
+            $table->float("latitude")->nullable();
+            $table->float("longitude")->nullable();
             $table->date("date")->nullable();
             $table->text("description")->nullable();
 

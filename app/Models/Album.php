@@ -13,6 +13,8 @@ class Album extends Model
         'title',
         'type',
         'location',
+        'latitude',
+        'longitude',
         'slug',
         'description',
         'user_id'

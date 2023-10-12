@@ -41,13 +41,14 @@
                     <datalist id="datalistOptions">
 
                     </datalist>
+                    <small class="text-success d-none valide">Emplacement valide 👍</small>
                     <input type="hidden" name="latitude" id="latitude">
                     <input type="hidden" name="longitude" id="longitude">
                 </div>
             </div>
 
             <div class="text-end">
-                <button type="submit" class="btn btn-primary mt-3">{{ __('Ajouter l\'album') }}</button>
+                <button type="submit" class="btn btn-primary mt-3 submit" disabled>{{ __('Ajouter l\'album') }}</button>
             </div>
         </form>
 
@@ -55,7 +56,7 @@
 
     @push('scripts')
         <script>
-            function debounce(func, timeout = 300) {
+            function debounce(func, timeout = 150) {
                 let timer;
                 return (...args) => {
                     clearTimeout(timer);
@@ -104,7 +105,13 @@
                     .then(response => response.json())
                     .then(data => {
                         document.querySelector("#latitude").value = data.features[0].geometry.coordinates[0]
-                        document.querySelector("#longitude").value = data.features[0].geometry.coordinates[1]
+                        document.querySelector("#longitude").value = data.features[0].geometry.coordinates[1];
+
+
+                        if(document.querySelector("#latitude").value && document.querySelector("#longitude").value) {
+                            document.querySelector(".valide").classList.remove("d-none");
+                            document.querySelector('.submit').disabled = false
+                        }
                     })
                     .catch(error => console.error('error', error));
             });

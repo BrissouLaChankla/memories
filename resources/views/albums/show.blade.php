@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container py-4">
-        <div class="row">
+        <div class="row align-items-center">
             <div class="col-lg-6">
                 <div class="bg-white p-3 p-md-5 shadow-sm mb-4 position-relative">
                     @if ($album->user_id === Auth::user()->id)
@@ -74,6 +74,12 @@
                     </small>
                 </div>
             </div>
+            <div class="col-lg-6">
+
+                <div class="bg-white p-1  shadow-sm mb-4 position-relative">
+                    <div id="map" ></div>
+                </div>
+            </div>
         </div>
 
         <div id="animated-thumbnails-gallery" class="text-center mt-3">
@@ -117,6 +123,9 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.7.1/css/lg-rotate.min.css"
             integrity="sha512-MA+4qtM9bL1Zo9WFrgpG5Du64wrIITpmGBgbGdxUhq2BOh5FT288I8vk6HD3qlRe3ld7kTYWbUxPBZ6BX+Paag=="
             crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+        {{-- OpenLayers --}}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v8.1.0/ol.css" type="text/css">
     @endpush
 
 
@@ -136,9 +145,46 @@
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+        {{-- OpenLayers --}}
+        <script src="https://cdn.jsdelivr.net/npm/ol@v8.1.0/dist/ol.js"></script>
+
+
 
 
         <script>
+        // OpenLayers
+        var map = new ol.Map({
+                target: 'map',
+                layers: [
+                    new ol.layer.Tile({
+                        source: new ol.source.OSM()
+                    })
+                ],
+                view: new ol.View({
+                    center: ol.proj.fromLonLat([{{$album->latitude}}, {{$album->longitude}}]),
+                    zoom: 10
+                })
+            });
+
+   var markers = new ol.layer.Vector({
+      source: new ol.source.Vector(),
+      style: new ol.style.Style({
+        image: new ol.style.Icon({
+          anchor: [0.5, 1],
+          src: '/marker.webp'
+        })
+      })
+    });
+    map.addLayer(markers);
+    
+    var marker = new ol.Feature(new ol.geom.Point(ol.proj.fromLonLat([{{$album->latitude}}, {{$album->longitude}}])));
+    markers.getSource().addFeature(marker);
+
+    
+
+
+
+
             lightGallery(document.getElementById('animated-thumbnails-gallery'), {
                 thumbnail: true,
                 plugins: [lgZoom, lgThumbnail, lgVideo],
@@ -186,36 +232,36 @@
 
 
 
-        if(document.querySelector('.delete-album')) {
-                document.querySelector('.delete-album').addEventListener('click', () => {
-                    Swal.fire({
-                        title: 'Attention !',
-                        text: "Tu vas supprimer cet album et toutes les photos qu'il contient !",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Oui, supprimer!',
-                        cancelButtonText: 'Annuler'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            fetch('{{ route('albums.destroy', ['album' => $album->id]) }}', {
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'X-CSRF-TOKEN': '{!! csrf_token() !!}'
-                                    },
-                                    method: "DELETE",
+                if (document.querySelector('.delete-album')) {
+                    document.querySelector('.delete-album').addEventListener('click', () => {
+                        Swal.fire({
+                            title: 'Attention !',
+                            text: "Tu vas supprimer cet album et toutes les photos qu'il contient !",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Oui, supprimer!',
+                            cancelButtonText: 'Annuler'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                fetch('{{ route('albums.destroy', ['album' => $album->id]) }}', {
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'X-CSRF-TOKEN': '{!! csrf_token() !!}'
+                                        },
+                                        method: "DELETE",
 
-                                })
-                                .then(response => response.json())
-                                .then(data => {
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
 
-                                    window.location.href = "/";
-                                })
-                        }
+                                        window.location.href = "/";
+                                    })
+                            }
+                        })
                     })
-                })
-            }
+                }
 
                 const shareData = {
                     title: 'Memories - {{ $album->title }}',

@@ -34,7 +34,6 @@ class AlbumController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
         
         $slug = $this->generateUniqueSlug($request->title);
         $request->merge(['slug' => $slug, 'user_id' =>  Auth::id()]);
