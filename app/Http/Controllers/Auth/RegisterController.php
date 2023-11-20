@@ -9,6 +9,9 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
+use App\Models\Album;
+
+
 class RegisterController extends Controller
 {
     /*
@@ -41,6 +44,12 @@ class RegisterController extends Controller
         $this->middleware('auth');
     }
 
+    public function showRegistrationForm()
+    {
+        $albums = Album::all();
+        return view("auth.register", compact("albums"));
+    }
+
     /**
      * Get a validator for an incoming registration request.
      *
@@ -64,8 +73,14 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+
+        if ($data['access'] === '') {
+            $data['access'] = null; 
+        }
+
         return User::create([
             'name' => $data['name'],
+            'access' => $data['access'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);

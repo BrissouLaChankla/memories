@@ -180,10 +180,6 @@
     var marker = new ol.Feature(new ol.geom.Point(ol.proj.fromLonLat([{{$album->latitude}}, {{$album->longitude}}])));
     markers.getSource().addFeature(marker);
 
-    
-
-
-
 
             lightGallery(document.getElementById('animated-thumbnails-gallery'), {
                 thumbnail: true,
